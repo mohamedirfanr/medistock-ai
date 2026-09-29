@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - MediStock AI Hospital Management</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="auth-page">
+
+  <div class="auth-split-container">
+    <!-- Brand Feature Panel -->
+    <div class="auth-brand-side">
+      <div>
+        <div class="auth-brand-header">
+          <div class="auth-brand-logo-icon">
+            <i data-lucide="cross"></i>
+          </div>
+          <div>
+            <h2 style="font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em;">MediStock <span>AI</span></h2>
+            <span style="font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.85;">Hospital Intelligence Platform</span>
+          </div>
+        </div>
+
+        <h1>AI-Driven Hospital Medicine Inventory Management</h1>
+        <p class="subtitle">
+          Empowering hospital pharmacies, ICU procurement teams, and health systems to eliminate stockouts, predict patient demand, and automate inventory workflows.
+        </p>
+
+        <ul class="auth-feature-list">
+          <li class="auth-feature-item">
+            <div class="auth-feature-icon"><i data-lucide="sparkles"></i></div>
+            <span>Predictive ML demand forecasting based on historical trends</span>
+          </li>
+          <li class="auth-feature-item">
+            <div class="auth-feature-icon"><i data-lucide="shield-alert"></i></div>
+            <span>Instant detection of critical shortages (🔴) and overstock (🟡)</span>
+          </li>
+          <li class="auth-feature-item">
+            <div class="auth-feature-icon"><i data-lucide="file-spreadsheet"></i></div>
+            <span>Seamless CSV upload & real-time inventory synchronization</span>
+          </li>
+          <li class="auth-feature-item">
+            <div class="auth-feature-icon"><i data-lucide="cpu"></i></div>
+            <span>Automated purchase order generation & clinical rationale</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="auth-brand-footer">
+        <i data-lucide="shield-check"></i>
+        <span>HIPAA Compliant &bull; FHIR Interoperability Ready &bull; SOC-2 Type II Certified</span>
+      </div>
+    </div>
+
+    <!-- Login Form Panel -->
+    <div class="auth-form-side">
+      <div class="auth-form-header">
+        <h2>Hospital Portal Sign In</h2>
+        <p>Enter your institutional credentials to access inventory analytics or <a href="signup.html">create a new hospital account</a>.</p>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group">
+          <label for="hospitalFacility">Hospital Facility / Network</label>
+          <div class="input-with-icon">
+            <i data-lucide="building-2"></i>
+            <select id="hospitalFacility" required>
+              <option value="st_jude">St. Jude Memorial Hospital (Central Pharmacy)</option>
+              <option value="metro_health">Metropolitan Health Sciences Center</option>
+              <option value="mercy_general">Mercy General Hospital - ICU Depot</option>
+              <option value="childrens">Children's Regional Medical Center</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="userRole">Departmental Role</label>
+          <div class="input-with-icon">
+            <i data-lucide="user-check"></i>
+            <select id="userRole" required>
+              <option value="chief_pharmacist">Chief Hospital Pharmacist</option>
+              <option value="procurement_lead">Procurement & Supply Chain Director</option>
+              <option value="icu_coordinator">ICU Medication Coordinator</option>
+              <option value="hospital_admin">Hospital Chief Operating Officer</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="emailInput">Institutional Email Address</label>
+          <div class="input-with-icon">
+            <i data-lucide="mail"></i>
+            <input type="email" id="emailInput" placeholder="dr.sarah@stjudehospital.org" value="sarah.jenkins@stjude.org" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="passwordInput">Password</label>
+          <div class="input-with-icon">
+            <i data-lucide="lock"></i>
+            <input type="password" id="passwordInput" placeholder="••••••••••••" value="MediStock2026!#" required>
+          </div>
+        </div>
+
+        <div class="form-options-row">
+          <label class="checkbox-label">
+            <input type="checkbox" checked>
+            <span>Remember this workstation</span>
+          </label>
+          <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 600;">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+          <span>Access MediStock AI Dashboard</span>
+          <i data-lucide="arrow-right"></i>
+        </button>
+      </form>
+
+      <!-- Quick Demo Login Banner -->
+      <div class="demo-credentials-banner">
+        <div>
+          <span>Quick Demo Access: <code>Chief Pharmacist</code></span>
+        </div>
+        <button type="button" class="demo-fill-btn" onclick="fillDemoAndLogin()">
+          1-Click Demo Login
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      showToast("Authenticating hospital credentials...", "primary");
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 700);
+    }
+
+    function fillDemoAndLogin() {
+      document.getElementById("emailInput").value = "chief.pharmacist@stjude.org";
+      document.getElementById("passwordInput").value = "DemoPass2026!";
+      showToast("Loaded demo profile. Logging in...", "success");
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 600);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

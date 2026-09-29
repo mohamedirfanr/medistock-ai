@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediStock AI - Hospital Medicine Inventory Dashboard</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- Chart.js & Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo">
+          <div class="brand-icon-box">
+            <i data-lucide="cross"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">MediStock <span>AI</span></span>
+            <span class="brand-subtitle">Hospital Inventory</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- SECTION 1: OPERATIONS -->
+        <div class="nav-section-title">Operations</div>
+        <a href="dashboard.html" class="nav-item active">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="upload.html" class="nav-item">
+          <i data-lucide="upload-cloud"></i>
+          <span>Upload CSV</span>
+          <span class="nav-badge badge-primary">Ingest</span>
+        </a>
+        <a href="inventory.html" class="nav-item">
+          <i data-lucide="boxes"></i>
+          <span>Inventory</span>
+          <span class="nav-badge badge-teal total-medicines-count">--</span>
+        </a>
+
+        <!-- SECTION 2: AI & ANALYTICS -->
+        <div class="nav-section-title">AI & Analytics</div>
+        <a href="demand-analysis.html" class="nav-item">
+          <i data-lucide="trending-up"></i>
+          <span>Demand Analysis</span>
+        </a>
+        <a href="ai-prediction.html" class="nav-item">
+          <i data-lucide="cpu"></i>
+          <span>AI Prediction</span>
+          <span class="nav-badge badge-primary">ML</span>
+        </a>
+        <a href="risk-analysis.html" class="nav-item">
+          <i data-lucide="alert-triangle"></i>
+          <span>Risk Analysis</span>
+          <span class="nav-badge badge-danger shortage-badge-count">-- alerts</span>
+        </a>
+        <a href="recommendations.html" class="nav-item">
+          <i data-lucide="sparkles"></i>
+          <span>AI Recommendations</span>
+          <span class="nav-badge badge-danger reorder-badge-count">Reorder</span>
+        </a>
+
+        <!-- SECTION 3: ADMINISTRATION / REPORTING -->
+        <div class="nav-section-title">Administration / Reporting</div>
+        <a href="reports.html" class="nav-item">
+          <i data-lucide="file-text"></i>
+          <span>Reports & Audit</span>
+        </a>
+
+        <!-- SECTION 4: SYSTEM -->
+        <div class="nav-section-title">System</div>
+        <a href="javascript:void(0)" onclick="openModal('Hospital System Settings', '<p>Inventory synchronization: Live FastAPI (30s polling).<br>Demand model: XGBoost Time-Series Regressor.<br>Currency: Indian Rupee (₹).<br>API Server: <code>http://127.0.0.1:8000/api</code></p>')" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span>Settings</span>
+        </a>
+        <a href="javascript:void(0)" onclick="openModal('Hospital Help & Support', '<p><strong>MediStock AI Support Desk</strong><br>Email: support@medistock.ai<br>Pharmacy Hotline: Ext 4022 (Hospital Pharmacy Informatics)</p>')" class="nav-item">
+          <i data-lucide="help-circle"></i>
+          <span>Help & Support</span>
+        </a>
+        <a href="login.html" class="nav-item" style="color: var(--danger); margin-top: auto;">
+          <i data-lucide="log-out"></i>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar">HA</div>
+          <div class="user-meta">
+            <span class="user-name">Hospital Admin</span>
+            <span class="user-role">Pharmacy Department</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-wrapper">
+      <!-- TOP NAVBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <i data-lucide="menu"></i>
+          </button>
+          
+          <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+            <a href="dashboard.html">MediStock AI</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Dashboard</span>
+          </nav>
+
+          <div class="api-status-badge" title="Live status with FastAPI backend">
+            <span class="status-pulse-dot"></span>
+            <span>API Connected</span>
+          </div>
+          <span class="sync-timestamp-text">Live Sync: Just now</span>
+        </div>
+
+        <div class="topbar-right">
+          <div class="quick-search">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="globalNavSearch" placeholder="Search medicines, category, batch...">
+          </div>
+
+          <div class="topbar-actions">
+            <button class="icon-btn" id="notifBtn" title="Hospital Stockout Alerts">
+              <i data-lucide="bell"></i>
+              <span class="icon-badge shortage-badge-count">--</span>
+            </button>
+            <a href="upload.html" class="btn btn-primary btn-sm">
+              <i data-lucide="upload-cloud"></i>
+              <span>Upload CSV</span>
+            </a>
+          </div>
+
+          <div class="user-profile-header" title="Administrator Profile">
+            <div class="user-avatar">HA</div>
+            <div class="user-meta">
+              <span class="user-name">Hospital Admin</span>
+              <span class="user-role">Pharmacy Department</span>
+            </div>
+            <i data-lucide="chevron-down" class="dropdown-chevron"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE CONTENT -->
+      <main class="page-content">
+        <!-- Workflow Stepper (7-step sequence) -->
+        <div class="workflow-strip">
+          <a href="dashboard.html" class="workflow-step active">
+            <span class="step-number">1</span>
+            <span>Dashboard</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="upload.html" class="workflow-step">
+            <span class="step-number">2</span>
+            <span>Upload CSV</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="demand-analysis.html" class="workflow-step">
+            <span class="step-number">3</span>
+            <span>Analyse</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="ai-prediction.html" class="workflow-step">
+            <span class="step-number">4</span>
+            <span>Predict</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="risk-analysis.html" class="workflow-step">
+            <span class="step-number">5</span>
+            <span>Detect Risk</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="recommendations.html" class="workflow-step">
+            <span class="step-number">6</span>
+            <span>Recommend</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="reports.html" class="workflow-step">
+            <span class="step-number">7</span>
+            <span>Report</span>
+          </a>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Hospital Inventory Intelligence</h1>
+            <p>AI-powered clinical demand forecasting, stockout risk detection, and automated replenishment orders.</p>
+          </div>
+          <div class="page-header-actions">
+            <a href="recommendations.html" class="btn btn-secondary">
+              <i data-lucide="zap"></i>
+              <span>Smart Reorder POs</span>
+            </a>
+            <a href="reports.html" class="btn btn-outline">
+              <i data-lucide="printer"></i>
+              <span>Export Report</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 7 KPI METRICS REQUIRED -->
+        <section class="stats-grid">
+          <!-- 1. Total Medicines -->
+          <div class="stat-card stat-total">
+            <div class="stat-card-top">
+              <span class="stat-label">Total Medicines</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="pill"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="kpiTotalMedicines">--</div>
+            <div class="stat-footer">
+              <span class="stat-trend neutral"><i data-lucide="check"></i> Formularies tracked</span>
+            </div>
+          </div>
+
+          <!-- 2. Low Stock (Shortages) -->
+          <div class="stat-card stat-danger">
+            <div class="stat-card-top">
+              <span class="stat-label">Low Stock (Shortage)</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="alert-octagon"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="kpiLowStock" style="color: var(--danger);">--</div>
+            <div class="stat-footer">
+              <span class="stat-trend down"><i data-lucide="arrow-down-right"></i> Immediate reorder required</span>
+            </div>
+          </div>
+
+          <!-- 3. Stable Stock -->
+          <div class="stat-card stat-success">
+            <div class="stat-card-top">
+              <span class="stat-label">Stable Stock</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="shield-check"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="kpiStableStock" style="color: var(--success);">--</div>
+            <div class="stat-footer">
+              <span class="stat-trend up"><i data-lucide="arrow-up-right"></i> Within safety margin</span>
+            </div>
+          </div>
+
+          <!-- 4. Overstock -->
+          <div class="stat-card stat-warning">
+            <div class="stat-card-top">
+              <span class="stat-label">Overstock</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="archive"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="kpiOverstock" style="color: var(--warning);">--</div>
+            <div class="stat-footer">
+              <span class="stat-trend neutral"><i data-lucide="pause-circle"></i> Surplus capital lockup</span>
+            </div>
+          </div>
+
+          <!-- 5. Predicted Demand -->
+          <div class="stat-card stat-teal">
+            <div class="stat-card-top">
+              <span class="stat-label">Predicted Demand</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="trending-up"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="kpiPredictedDemand">-- units</div>
+            <div class="stat-footer">
+              <span class="stat-trend up"><i data-lucide="sparkles"></i> AI projected next month</span>
+            </div>
+          </div>
+
+          <!-- 6. Inventory Value -->
+          <div class="stat-card stat-purple">
+            <div class="stat-card-top">
+              <span class="stat-label">Inventory Value</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="badge-dollar-sign"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="kpiInventoryValue">--</div>
+            <div class="stat-footer">
+              <span class="stat-trend up"><i data-lucide="activity"></i> Current pharmacy valuation</span>
+            </div>
+          </div>
+
+          <!-- 7. Total Reorder Needed -->
+          <div class="stat-card stat-orange">
+            <div class="stat-card-top">
+              <span class="stat-label">Total Reorder Needed</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="shopping-cart"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="kpiTotalReorderNeeded" style="color: var(--danger);">-- units</div>
+            <div class="stat-footer">
+              <span class="stat-trend down"><i data-lucide="alert-circle"></i> Clinical replenishments</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- AI Clinical Highlight Insight (Bound directly to live Paracetamol / top shortage record) -->
+        <div class="ai-insight-box">
+          <div class="ai-icon-circle">
+            <i data-lucide="sparkles"></i>
+          </div>
+          <div class="ai-content">
+            <h4 id="aiInsightAlertTitle">AI Clinical Diagnostic &bull; Paracetamol 500mg</h4>
+            <p id="aiInsightAlertText">
+              "Demand has increased continuously over the previous months, while current stock is insufficient to meet the predicted requirement."
+            </p>
+            <div style="margin-top: 0.5rem; display: flex; gap: 1.5rem; font-size: 0.82rem; color: var(--text-secondary); flex-wrap: wrap;">
+              <span>Predicted Demand: <strong id="aiInsightDemand" style="color: var(--primary);">800 units</strong></span>
+              <span>Current Stock: <strong id="aiInsightStock">300 units</strong></span>
+              <span>Recommended Reorder: <strong id="aiInsightReorder" style="color: var(--danger);">+500 units</strong></span>
+              <span>Status: <span id="aiInsightBadge" class="badge badge-danger">🔴 Shortage</span></span>
+            </div>
+          </div>
+          <a href="inventory.html" class="btn btn-outline btn-sm" style="align-self: center; background: #fff;">
+            <span>Review Diagnostic</span>
+            <i data-lucide="arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- 4 CHARTS REQUIRED -->
+        <div class="charts-grid-main">
+          <!-- Chart 1: Monthly Medicine Demand -->
+          <div class="chart-card">
+            <div class="card-header">
+              <div class="card-title-box">
+                <i data-lucide="line-chart" style="color: var(--primary);"></i>
+                <div>
+                  <h3 class="card-title">Monthly Medicine Demand</h3>
+                  <span class="card-subtitle">Aggregate historical consumption + Next-month AI projection</span>
+                </div>
+              </div>
+              <span class="badge badge-primary">Jan - May 2026</span>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="monthlyDemandChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: Current Stock vs Predicted Demand -->
+          <div class="chart-card">
+            <div class="card-header">
+              <div class="card-title-box">
+                <i data-lucide="bar-chart-2" style="color: var(--secondary);"></i>
+                <div>
+                  <h3 class="card-title">Current Stock vs Predicted Demand</h3>
+                  <span class="card-subtitle">Immediate stock adequacy across key medicines</span>
+                </div>
+              </div>
+              <span class="badge badge-neutral">Top 7 Formularies</span>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="stockVsDemandChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 3: Risk Distribution -->
+          <div class="chart-card">
+            <div class="card-header">
+              <div class="card-title-box">
+                <i data-lucide="pie-chart" style="color: var(--danger);"></i>
+                <div>
+                  <h3 class="card-title">Risk Distribution</h3>
+                  <span class="card-subtitle">Formulary split by stockout & overstock vulnerability</span>
+                </div>
+              </div>
+              <span class="badge badge-warning">AI Classified</span>
+            </div>
+            <div class="chart-canvas-container" style="max-height: 250px;">
+              <canvas id="riskDistributionChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 4: Top Medicines by Demand -->
+          <div class="chart-card">
+            <div class="card-header">
+              <div class="card-title-box">
+                <i data-lucide="trending-up" style="color: var(--primary);"></i>
+                <div>
+                  <h3 class="card-title">Top Medicines by Demand</h3>
+                  <span class="card-subtitle">High-velocity medicines requiring active inventory monitoring</span>
+                </div>
+              </div>
+              <span class="badge badge-primary">Volume Ranked</span>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="topMedicinesChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK SHORTAGE QUEUE PREVIEW TABLE -->
+        <div class="card" style="margin-top: 2rem;">
+          <div class="card-header">
+            <div class="card-title-box">
+              <i data-lucide="alert-octagon" style="color: var(--danger);"></i>
+              <div>
+                <h3 class="card-title">Urgent Shortage Action Queue</h3>
+                <span class="card-subtitle">Priority formularies requiring immediate supplier replenishment orders</span>
+              </div>
+            </div>
+            <a href="recommendations.html" class="btn btn-outline btn-sm">
+              <span>View All Recommendations &rarr;</span>
+            </a>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Medicine</th>
+                  <th>Current Stock</th>
+                  <th>Predicted Demand</th>
+                  <th>Risk Rating</th>
+                  <th>Recommended Reorder</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="quickShortageBody">
+                <!-- Dynamically populated from single store -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    async function renderDashboard() {
+      try {
+        const store = window.inventoryData;
+        let kpis = store ? store.getKPIs() : {};
+        let medicines = store ? store.getItems() : [];
+
+        // If live backend API is available, fetch latest
+        if (window.medistockApi && window.medistockApi.isUsingBackend()) {
+          try {
+            const [liveKpis, liveMedicines] = await Promise.all([
+              window.medistockApi.getDashboardKPIs(),
+              window.medistockApi.getInventory()
+            ]);
+            if (liveKpis && (liveKpis.totalMedicines || liveKpis.total_medicines)) {
+              kpis = liveKpis;
+            }
+            if (Array.isArray(liveMedicines) && liveMedicines.length > 0) {
+              medicines = liveMedicines;
+            }
+          } catch (e) {
+            console.warn("Backend fetch failed, using local store data:", e.message);
+          }
+        }
+
+        // 7 Dashboard KPIs from authoritative source
+        const totalMedicines = kpis.totalMedicines ?? kpis.total_medicines ?? medicines.length;
+        const lowStock = kpis.lowStock ?? kpis.low_stock ?? 0;
+        const stableStock = kpis.stableStock ?? kpis.stable_stock ?? 0;
+        const overstock = kpis.overstock ?? 0;
+        const predictedDemand = kpis.totalPredictedDemand ?? kpis.total_predicted_demand ?? 0;
+        const inventoryValue = kpis.totalInventoryValue ?? kpis.total_inventory_value ?? 0;
+        const totalReorderNeeded = kpis.totalReorderNeeded ?? kpis.total_reorder_needed ?? 0;
+
+        const elTotal = document.getElementById("kpiTotalMedicines");
+        if (elTotal) elTotal.textContent = totalMedicines;
+
+        const elLow = document.getElementById("kpiLowStock");
+        if (elLow) elLow.textContent = lowStock;
+
+        const elStable = document.getElementById("kpiStableStock");
+        if (elStable) elStable.textContent = stableStock;
+
+        const elOver = document.getElementById("kpiOverstock");
+        if (elOver) elOver.textContent = overstock;
+
+        const elPred = document.getElementById("kpiPredictedDemand");
+        if (elPred) elPred.textContent = store ? store.formatUnits(predictedDemand) : `${predictedDemand.toLocaleString('en-IN')} units`;
+
+        const elVal = document.getElementById("kpiInventoryValue");
+        if (elVal) elVal.textContent = store ? store.formatIndianCurrency(inventoryValue) : `₹${inventoryValue.toLocaleString('en-IN')}`;
+        
+        const reorderEl = document.getElementById("kpiTotalReorderNeeded");
+        if (reorderEl) reorderEl.textContent = store ? store.formatUnits(totalReorderNeeded) : `${totalReorderNeeded.toLocaleString('en-IN')} units`;
+
+        // Featured Clinical AI Diagnostic card: Paracetamol or top active shortage
+        const paracetamol = (store && store.getMedicine("Paracetamol")) || 
+                            (medicines && medicines.find(m => (m.riskLevel || m.risk_level) === "Shortage")) || 
+                            medicines[0];
+        if (paracetamol) {
+          const titleEl = document.getElementById("aiInsightAlertTitle");
+          if (titleEl) titleEl.innerHTML = `AI Clinical Diagnostic &bull; ${paracetamol.medicine}`;
+
+          const alertTextEl = document.getElementById("aiInsightAlertText");
+          if (alertTextEl) alertTextEl.textContent = `"${paracetamol.explanation || ''}"`;
+
+          const dEl = document.getElementById("aiInsightDemand");
+          if (dEl) dEl.textContent = store.formatUnits(paracetamol.predictedDemand ?? paracetamol.predicted_demand);
+
+          const sEl = document.getElementById("aiInsightStock");
+          if (sEl) sEl.textContent = store.formatUnits(paracetamol.currentStock ?? paracetamol.current_stock);
+
+          const rEl = document.getElementById("aiInsightReorder");
+          if (rEl) rEl.textContent = `+${store.formatUnits(paracetamol.recommendedReorder ?? paracetamol.recommended_reorder)}`;
+
+          const bEl = document.getElementById("aiInsightBadge");
+          if (bEl) {
+            bEl.className = `badge ${paracetamol.riskBadgeClass || 'badge-danger'}`;
+            bEl.textContent = `${paracetamol.riskIcon || '🔴'} ${paracetamol.riskLevel || paracetamol.risk_level}`;
+          }
+        }
+
+        // Initialize / update all 4 charts with live data
+        if (window.ChartManager) {
+          window.ChartManager.renderMonthlyDemandChart("monthlyDemandChart", medicines);
+          window.ChartManager.renderStockVsDemandChart("stockVsDemandChart", medicines);
+          window.ChartManager.renderRiskDistributionChart("riskDistributionChart", kpis);
+          window.ChartManager.renderTopMedicinesChart("topMedicinesChart", medicines);
+        }
+
+        // Quick shortage preview table
+        const shortages = (medicines || [])
+          .filter(m => (m.riskLevel || m.risk_level) === "Shortage")
+          .slice(0, 4);
+
+        const tbody = document.getElementById("quickShortageBody");
+        if (tbody) {
+          tbody.innerHTML = shortages.map(m => {
+            const stock = Number(m.currentStock ?? m.current_stock).toLocaleString('en-IN');
+            const demand = Number(m.predictedDemand ?? m.predicted_demand).toLocaleString('en-IN');
+            const reorder = Number(m.recommendedReorder ?? m.recommended_reorder).toLocaleString('en-IN');
+            return `
+              <tr>
+                <td><strong>${m.medicine}</strong></td>
+                <td>${stock} units</td>
+                <td><strong style="color: var(--primary);">${demand} units</strong></td>
+                <td><span class="badge ${m.riskBadgeClass || 'badge-danger'}">${m.riskIcon || '🔴'} ${m.riskLevel || m.risk_level}</span></td>
+                <td><strong style="color: var(--danger);">+${reorder} units</strong></td>
+                <td>
+                  <a href="recommendations.html" class="btn btn-outline btn-sm">Issue PO</a>
+                </td>
+              </tr>
+            `;
+          }).join("");
+        }
+
+        if (window.lucide) window.lucide.createIcons();
+      } catch (err) {
+        console.error("Dashboard render error:", err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      await renderDashboard();
+
+      // Subscribe to central store updates for automatic reactivity
+      if (window.inventoryData && typeof window.inventoryData.subscribe === "function") {
+        window.inventoryData.subscribe(() => {
+          renderDashboard();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

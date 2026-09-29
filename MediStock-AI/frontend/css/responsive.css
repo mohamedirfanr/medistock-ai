@@ -1,0 +1,131 @@
+/* MediStock AI - Mobile & Tablet Responsive Media Queries */
+
+/* Tablet & Smaller Desktops */
+@media (max-width: 1024px) {
+  .charts-grid-main {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-grid-secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-brand-side {
+    padding: 2.5rem;
+  }
+
+  .auth-form-side {
+    width: 480px;
+    padding: 3rem 2rem;
+  }
+}
+
+/* Tablets (portrait) & Large Phones */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 260px;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.4);
+    z-index: 95;
+    display: none;
+  }
+
+  .sidebar-backdrop.active {
+    display: block;
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .topbar {
+    padding: 0 1rem;
+  }
+
+  .hospital-badge {
+    display: none;
+  }
+
+  .quick-search {
+    width: 180px;
+  }
+
+  .quick-search input:focus {
+    width: 220px;
+  }
+
+  .page-content {
+    padding: 1.25rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .auth-split-container {
+    flex-direction: column;
+  }
+
+  .auth-brand-side {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .auth-form-side {
+    width: 100%;
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* Small Mobile Phones */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar-right .quick-search {
+    display: none;
+  }
+
+  .page-header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .page-header-actions .btn {
+    width: 100%;
+  }
+
+  .modal-card {
+    margin: 1rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}

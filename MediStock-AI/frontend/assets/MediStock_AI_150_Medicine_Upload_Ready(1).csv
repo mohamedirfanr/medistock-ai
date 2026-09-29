@@ -1,0 +1,151 @@
+Medicine,Jan,Feb,Mar,Apr,Current_Stock
+Paracetamol 500mg,1263,1386,1508,1838,1285
+Paracetamol 650mg,1006,1017,1158,1380,1401
+Ibuprofen 400mg,597,659,668,650,883
+Diclofenac 50mg,526,490,441,418,835
+Naproxen 250mg,212,243,273,334,257
+Amoxicillin 250mg,915,899,783,769,780
+Amoxicillin 500mg,659,657,775,889,495
+Azithromycin 250mg,95,96,105,112,166
+Azithromycin 500mg,230,212,219,230,162
+Cefixime 200mg,1126,1127,1187,1164,677
+Cefixime 400mg,1030,1267,1463,1684,1180
+Ciprofloxacin 500mg,1378,1564,1986,2410,888
+Doxycycline 100mg,597,651,727,790,430
+Metronidazole 400mg,619,590,619,702,822
+Clindamycin 300mg,608,451,337,341,727
+Cetirizine 10mg,811,879,1068,1234,1771
+Levocetirizine 5mg,214,231,264,281,394
+Loratadine 10mg,762,901,1084,1046,849
+Fexofenadine 120mg,1306,1432,1536,1645,1895
+Chlorpheniramine 4mg,755,494,398,357,162
+Omeprazole 20mg,593,624,546,527,193
+Omeprazole 40mg,337,321,331,299,541
+Pantoprazole 40mg,650,685,699,779,714
+Pantoprazole 20mg,393,439,495,553,796
+Famotidine 20mg,905,852,936,993,1076
+Domperidone 10mg,869,958,1011,1125,1251
+Ondansetron 4mg,1130,1256,1389,1393,2284
+Antacid Suspension,73,86,93,113,90
+ORS Sachet,786,881,888,953,893
+Loperamide 2mg,803,879,906,1049,294
+Metformin 500mg,1036,961,827,618,711
+Metformin 850mg,433,526,617,719,1022
+Metformin 1000mg,227,182,129,114,65
+Glimepiride 1mg,633,664,654,687,893
+Glimepiride 2mg,218,243,264,307,294
+Gliclazide 80mg,1500,1863,2324,2677,1823
+Sitagliptin 100mg,197,214,222,283,162
+Acarbose 50mg,723,826,989,1119,1351
+Pioglitazone 15mg,246,299,349,417,525
+Insulin Regular,768,801,836,847,552
+Amlodipine 5mg,450,459,475,376,352
+Amlodipine 10mg,626,596,572,652,549
+Losartan 50mg,721,655,575,572,774
+Losartan 100mg,1014,1184,1408,1644,1427
+Telmisartan 40mg,621,730,895,1053,635
+Telmisartan 80mg,1154,1199,1306,1489,1251
+Atenolol 50mg,394,403,395,388,638
+Atenolol 100mg,305,263,302,351,317
+Enalapril 5mg,1116,974,1004,759,526
+Enalapril 10mg,1030,1087,1300,1467,1415
+Aspirin 75mg,854,714,562,502,593
+Aspirin 150mg,576,629,786,946,674
+Clopidogrel 75mg,1053,1135,1277,1490,828
+Atorvastatin 10mg,835,903,976,1052,941
+Atorvastatin 20mg,743,805,955,1093,1085
+Rosuvastatin 10mg,434,466,475,423,756
+Rosuvastatin 20mg,659,752,799,982,517
+Furosemide 40mg,521,543,530,536,147
+Hydrochlorothiazide 25mg,640,600,697,730,456
+Spironolactone 25mg,793,758,681,572,1249
+Salbutamol 4mg,1105,1215,1140,1190,1268
+Salbutamol Inhaler,410,375,409,400,173
+Montelukast 10mg,331,292,303,299,531
+Montelukast 5mg,309,303,283,237,392
+Budesonide Inhaler,443,427,431,362,439
+Ambroxol 30mg,560,473,367,285,359
+Bromhexine 4mg,610,570,417,394,360
+Dextromethorphan Syrup,683,833,976,1145,1179
+Cough Syrup 100ml,213,210,222,283,414
+Theophylline 200mg,480,515,610,685,819
+Vitamin C 500mg,124,114,105,90,90
+Vitamin C 1000mg,1292,1439,1649,1798,875
+Vitamin D3 1000IU,444,426,436,471,673
+Vitamin D3 60000IU,1136,1092,1066,1135,829
+Vitamin B12 500mcg,93,107,98,98,68
+Vitamin B Complex,950,1027,977,1066,460
+Folic Acid 5mg,1179,1358,1614,1829,2032
+Calcium 500mg,555,613,531,496,479
+Calcium + Vitamin D3,120,135,142,169,131
+Iron + Folic Acid,283,230,180,160,363
+Zinc 20mg,391,426,485,523,237
+Magnesium 250mg,754,629,589,647,1109
+Multivitamin Tablet,171,217,245,280,293
+ORS Apple,937,1011,1020,963,1100
+Electrolyte Powder,762,708,701,609,1116
+Clotrimazole Cream,827,976,1120,1337,724
+Clotrimazole 100mg,229,261,318,382,520
+Miconazole Cream,407,482,522,563,720
+Ketoconazole Cream,1293,1233,1350,1283,1202
+Mupirocin Ointment,192,141,127,136,59
+Hydrocortisone Cream,781,746,717,819,1224
+Calamine Lotion,821,810,772,756,1087
+Permethrin Cream,408,423,408,375,522
+Povidone Iodine,811,905,1035,1090,590
+Silver Sulfadiazine,658,783,869,972,865
+Artificial Tears,289,236,235,238,143
+Timolol Eye Drops,1078,1202,1463,1575,1636
+Moxifloxacin Eye Drops,1139,1385,1477,1643,1791
+Ciprofloxacin Eye Drops,140,144,154,174,273
+Olopatadine Eye Drops,779,997,1200,1347,1838
+Amoxicillin + Clavulanate 625mg,1276,1462,1574,1910,792
+Cefuroxime 500mg,469,541,617,696,973
+Cefpodoxime 200mg,367,298,215,228,261
+Levofloxacin 500mg,652,595,655,527,165
+Linezolid 600mg,221,188,179,173,58
+Fluconazole 150mg,404,451,568,611,417
+Itraconazole 100mg,1260,1405,1625,1810,2690
+Acyclovir 400mg,721,750,805,896,1409
+Oseltamivir 75mg,740,742,698,768,855
+Albendazole 400mg,564,689,787,932,1043
+Levothyroxine 25mcg,599,696,842,903,1216
+Levothyroxine 50mcg,314,297,317,260,156
+Levothyroxine 75mcg,1060,1080,1020,871,999
+Levothyroxine 100mcg,261,304,334,376,266
+Prednisolone 5mg,538,610,791,911,1000
+Prednisolone 10mg,1031,1043,1107,1121,459
+Dexamethasone 4mg,544,494,445,425,317
+Hydroxychloroquine 200mg,1121,986,775,863,465
+Methotrexate 2.5mg,793,829,866,830,1100
+Allopurinol 100mg,693,951,1036,1148,1033
+Potassium Chloride,394,347,338,307,197
+Sodium Chloride Injection,217,246,281,313,437
+Dextrose 5%,207,210,186,196,159
+Normal Saline 500ml,240,263,255,256,364
+Ringer Lactate,204,229,249,274,295
+Adrenaline Injection,808,866,812,752,1228
+Atropine Injection,929,992,1174,1365,305
+Heparin Injection,1030,989,1123,1060,1299
+Enoxaparin 40mg,1051,1173,1220,1070,831
+Tranexamic Acid,638,774,866,996,1274
+Paracetamol Injection,643,604,601,624,459
+Diclofenac Injection,1106,1181,1190,1302,1182
+Ondansetron Injection,1166,1505,1822,2145,2003
+Pantoprazole Injection,166,183,193,222,279
+Ceftriaxone Injection,999,803,736,706,1379
+Insulin Glargine,889,805,658,580,981
+Insulin Aspart,906,771,807,684,252
+Budesonide Respules,645,589,487,433,968
+Ipratropium Respules,827,823,747,789,1423
+Nebulizer Solution,1156,1034,1115,1038,1937
+Hydrogen Peroxide,888,1032,1180,1289,500
+Hand Sanitizer,1057,938,861,725,592
+Surgical Spirit,152,139,166,179,235
+Medical Gauze,452,533,618,678,759
+Adhesive Bandage,1030,1081,1145,1314,1432
+Morphine 10mg,717,718,764,824,1226
+Tramadol 50mg,566,577,690,716,863
+Gabapentin 300mg,240,261,283,309,144
+Pregabalin 75mg,707,635,549,577,773
+Vitamin K 10mg,727,675,499,560,332

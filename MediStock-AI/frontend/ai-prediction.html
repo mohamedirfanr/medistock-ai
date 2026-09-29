@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediStock AI - Predictive Demand Forecasting</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo">
+          <div class="brand-icon-box">
+            <i data-lucide="cross"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">MediStock <span>AI</span></span>
+            <span class="brand-subtitle">Hospital Inventory</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- SECTION 1: OPERATIONS -->
+        <div class="nav-section-title">Operations</div>
+        <a href="dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="upload.html" class="nav-item">
+          <i data-lucide="upload-cloud"></i>
+          <span>Upload CSV</span>
+          <span class="nav-badge badge-primary">Ingest</span>
+        </a>
+        <a href="inventory.html" class="nav-item">
+          <i data-lucide="boxes"></i>
+          <span>Inventory</span>
+          <span class="nav-badge badge-teal total-medicines-count">--</span>
+        </a>
+
+        <!-- SECTION 2: AI & ANALYTICS -->
+        <div class="nav-section-title">AI & Analytics</div>
+        <a href="demand-analysis.html" class="nav-item">
+          <i data-lucide="trending-up"></i>
+          <span>Demand Analysis</span>
+        </a>
+        <a href="ai-prediction.html" class="nav-item active">
+          <i data-lucide="cpu"></i>
+          <span>AI Prediction</span>
+          <span class="nav-badge badge-primary">ML</span>
+        </a>
+        <a href="risk-analysis.html" class="nav-item">
+          <i data-lucide="alert-triangle"></i>
+          <span>Risk Analysis</span>
+          <span class="nav-badge badge-danger shortage-badge-count">-- alerts</span>
+        </a>
+        <a href="recommendations.html" class="nav-item">
+          <i data-lucide="sparkles"></i>
+          <span>AI Recommendations</span>
+          <span class="nav-badge badge-danger reorder-badge-count">Reorder</span>
+        </a>
+
+        <!-- SECTION 3: ADMINISTRATION / REPORTING -->
+        <div class="nav-section-title">Administration / Reporting</div>
+        <a href="reports.html" class="nav-item">
+          <i data-lucide="file-text"></i>
+          <span>Reports & Audit</span>
+        </a>
+
+        <!-- SECTION 4: SYSTEM -->
+        <div class="nav-section-title">System</div>
+        <a href="javascript:void(0)" onclick="openModal('Hospital System Settings', '<p>Inventory synchronization: Live FastAPI (30s polling).<br>Demand model: XGBoost Time-Series Regressor.<br>Currency: Indian Rupee (₹).<br>API Server: <code>http://127.0.0.1:8000/api</code></p>')" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span>Settings</span>
+        </a>
+        <a href="javascript:void(0)" onclick="openModal('Hospital Help & Support', '<p><strong>MediStock AI Support Desk</strong><br>Email: support@medistock.ai<br>Pharmacy Hotline: Ext 4022 (Hospital Pharmacy Informatics)</p>')" class="nav-item">
+          <i data-lucide="help-circle"></i>
+          <span>Help & Support</span>
+        </a>
+        <a href="login.html" class="nav-item" style="color: var(--danger); margin-top: auto;">
+          <i data-lucide="log-out"></i>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar">HA</div>
+          <div class="user-meta">
+            <span class="user-name">Hospital Admin</span>
+            <span class="user-role">Pharmacy Department</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn"><i data-lucide="menu"></i></button>
+          
+          <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+            <a href="dashboard.html">MediStock AI</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">AI Prediction</span>
+          </nav>
+
+          <div class="api-status-badge" title="Live status with FastAPI backend">
+            <span class="status-pulse-dot"></span>
+            <span>API Connected</span>
+          </div>
+          <span class="sync-timestamp-text">Live Sync: Just now</span>
+        </div>
+
+        <div class="topbar-right">
+          <div class="quick-search">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="globalNavSearch" placeholder="Search medicines, category, batch...">
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-btn" id="notifBtn" title="Hospital Alerts">
+              <i data-lucide="bell"></i>
+              <span class="icon-badge shortage-badge-count">--</span>
+            </button>
+            <a href="risk-analysis.html" class="btn btn-primary btn-sm">
+              <span>Proceed to Risk Detection</span>
+              <i data-lucide="arrow-right"></i>
+            </a>
+          </div>
+
+          <div class="user-profile-header" title="Administrator Profile">
+            <div class="user-avatar">HA</div>
+            <div class="user-meta">
+              <span class="user-name">Hospital Admin</span>
+              <span class="user-role">Pharmacy Department</span>
+            </div>
+            <i data-lucide="chevron-down" class="dropdown-chevron"></i>
+          </div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Workflow Stepper (7-step sequence) -->
+        <div class="workflow-strip">
+          <a href="dashboard.html" class="workflow-step">
+            <span class="step-number">1</span>
+            <span>Dashboard</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="upload.html" class="workflow-step">
+            <span class="step-number">2</span>
+            <span>Upload CSV</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="demand-analysis.html" class="workflow-step">
+            <span class="step-number">3</span>
+            <span>Analyse</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="ai-prediction.html" class="workflow-step active">
+            <span class="step-number">4</span>
+            <span>Predict</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="risk-analysis.html" class="workflow-step">
+            <span class="step-number">5</span>
+            <span>Detect Risk</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="recommendations.html" class="workflow-step">
+            <span class="step-number">6</span>
+            <span>Recommend</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="reports.html" class="workflow-step">
+            <span class="step-number">7</span>
+            <span>Report</span>
+          </a>
+        </div>
+
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>AI Predictive Demand Forecasting</h1>
+            <p>Advanced machine learning models forecast May and June dispensing needs with 95% confidence intervals.</p>
+          </div>
+          <div class="page-header-actions">
+            <div style="display: flex; align-items: center; gap: 0.5rem; background: #fff; border: 1px solid var(--border); padding: 0.35rem 0.75rem; border-radius: var(--radius-md);">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);">Model:</span>
+              <select id="forecastModelSelect" style="border: none; outline: none; background: transparent; font-weight: 600; font-size: 0.85rem; color: var(--primary); cursor: pointer;">
+                <option value="xgboost">XGBoost Time-Series Ensemble (Recommended)</option>
+                <option value="prophet">Meta Prophet Healthcare Model</option>
+                <option value="arima">Auto-ARIMA Seasonal</option>
+                <option value="lstm">Deep LSTM Neural Network</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ML Performance Metric Cards -->
+        <div class="stats-grid">
+          <div class="stat-card stat-teal">
+            <div class="stat-card-top">
+              <span class="stat-label">Model Accuracy (MAPE)</span>
+              <div class="stat-icon-wrapper"><i data-lucide="target"></i></div>
+            </div>
+            <div class="stat-value" id="metricMAPE">3.8%</div>
+            <div class="stat-footer">Mean Absolute Pct Error (Lower is better)</div>
+          </div>
+
+          <div class="stat-card stat-total">
+            <div class="stat-card-top">
+              <span class="stat-label">RMSE Variance</span>
+              <div class="stat-icon-wrapper"><i data-lucide="activity"></i></div>
+            </div>
+            <div class="stat-value" id="metricRMSE">14.2 units</div>
+            <div class="stat-footer">Root Mean Square Error</div>
+          </div>
+
+          <div class="stat-card stat-success">
+            <div class="stat-card-top">
+              <span class="stat-label">Goodness of Fit (R²)</span>
+              <div class="stat-icon-wrapper"><i data-lucide="check-circle-2"></i></div>
+            </div>
+            <div class="stat-value" id="metricR2">0.96</div>
+            <div class="stat-footer">Statistically significant correlation</div>
+          </div>
+        </div>
+
+        <!-- Forecasting Chart -->
+        <div class="chart-card" style="margin-bottom: 2rem;">
+          <div class="card-header">
+            <div class="card-title-box">
+              <i data-lucide="sparkles" style="color: var(--secondary);"></i>
+              <div>
+                <h3 class="card-title">Forecast Horizon & Confidence Funnel</h3>
+                <span class="card-subtitle">Projected May & June clinical demand with 95% Bayesian Confidence Intervals</span>
+              </div>
+            </div>
+            <span class="badge badge-primary">Multi-Horizon AI</span>
+          </div>
+          <div class="chart-canvas-container" style="height: 300px;">
+            <canvas id="forecastChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Prediction Table -->
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Medicine</th>
+                  <th>Last Actual (Apr)</th>
+                  <th>May AI Forecast</th>
+                  <th>June AI Forecast</th>
+                  <th>Confidence Index</th>
+                  <th>Stock Sufficiency</th>
+                </tr>
+              </thead>
+              <tbody id="predictionTableBody">
+                <!-- Injected via prediction.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/prediction.js"></script>
+</body>
+</html>

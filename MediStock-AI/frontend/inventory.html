@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediStock AI - Hospital Medicine Inventory</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo">
+          <div class="brand-icon-box">
+            <i data-lucide="cross"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">MediStock <span>AI</span></span>
+            <span class="brand-subtitle">Hospital Inventory</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- SECTION 1: OPERATIONS -->
+        <div class="nav-section-title">Operations</div>
+        <a href="dashboard.html" class="nav-item">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="upload.html" class="nav-item">
+          <i data-lucide="upload-cloud"></i>
+          <span>Upload CSV</span>
+          <span class="nav-badge badge-primary">Ingest</span>
+        </a>
+        <a href="inventory.html" class="nav-item active">
+          <i data-lucide="boxes"></i>
+          <span>Inventory</span>
+          <span class="nav-badge badge-teal total-medicines-count">--</span>
+        </a>
+
+        <!-- SECTION 2: AI & ANALYTICS -->
+        <div class="nav-section-title">AI & Analytics</div>
+        <a href="demand-analysis.html" class="nav-item">
+          <i data-lucide="trending-up"></i>
+          <span>Demand Analysis</span>
+        </a>
+        <a href="ai-prediction.html" class="nav-item">
+          <i data-lucide="cpu"></i>
+          <span>AI Prediction</span>
+          <span class="nav-badge badge-primary">ML</span>
+        </a>
+        <a href="risk-analysis.html" class="nav-item">
+          <i data-lucide="alert-triangle"></i>
+          <span>Risk Analysis</span>
+          <span class="nav-badge badge-danger shortage-badge-count">-- alerts</span>
+        </a>
+        <a href="recommendations.html" class="nav-item">
+          <i data-lucide="sparkles"></i>
+          <span>AI Recommendations</span>
+          <span class="nav-badge badge-danger reorder-badge-count">Reorder</span>
+        </a>
+
+        <!-- SECTION 3: ADMINISTRATION / REPORTING -->
+        <div class="nav-section-title">Administration / Reporting</div>
+        <a href="reports.html" class="nav-item">
+          <i data-lucide="file-text"></i>
+          <span>Reports & Audit</span>
+        </a>
+
+        <!-- SECTION 4: SYSTEM -->
+        <div class="nav-section-title">System</div>
+        <a href="javascript:void(0)" onclick="openModal('Hospital System Settings', '<p>Inventory synchronization: Live FastAPI (30s polling).<br>Demand model: XGBoost Time-Series Regressor.<br>Currency: Indian Rupee (₹).<br>API Server: <code>http://127.0.0.1:8000/api</code></p>')" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span>Settings</span>
+        </a>
+        <a href="javascript:void(0)" onclick="openModal('Hospital Help & Support', '<p><strong>MediStock AI Support Desk</strong><br>Email: support@medistock.ai<br>Pharmacy Hotline: Ext 4022 (Hospital Pharmacy Informatics)</p>')" class="nav-item">
+          <i data-lucide="help-circle"></i>
+          <span>Help & Support</span>
+        </a>
+        <a href="login.html" class="nav-item" style="color: var(--danger); margin-top: auto;">
+          <i data-lucide="log-out"></i>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar">HA</div>
+          <div class="user-meta">
+            <span class="user-name">Hospital Admin</span>
+            <span class="user-role">Pharmacy Department</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-wrapper">
+      <!-- TOP NAVBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <i data-lucide="menu"></i>
+          </button>
+          
+          <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+            <a href="dashboard.html">MediStock AI</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">Inventory</span>
+          </nav>
+
+          <div class="api-status-badge" title="Live status with FastAPI backend">
+            <span class="status-pulse-dot"></span>
+            <span>API Connected</span>
+          </div>
+          <span class="sync-timestamp-text">Live Sync: Just now</span>
+        </div>
+
+        <div class="topbar-right">
+          <div class="quick-search">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="inventorySearch" placeholder="Search medicines, category, batch...">
+          </div>
+
+          <div class="topbar-actions">
+            <button class="icon-btn" id="notifBtn" title="Hospital Stockout Alerts">
+              <i data-lucide="bell"></i>
+              <span class="icon-badge shortage-badge-count">--</span>
+            </button>
+            <a href="upload.html" class="btn btn-primary btn-sm">
+              <i data-lucide="upload-cloud"></i>
+              <span>Upload CSV</span>
+            </a>
+          </div>
+
+          <div class="user-profile-header" title="Administrator Profile">
+            <div class="user-avatar">HA</div>
+            <div class="user-meta">
+              <span class="user-name">Hospital Admin</span>
+              <span class="user-role">Pharmacy Department</span>
+            </div>
+            <i data-lucide="chevron-down" class="dropdown-chevron"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE CONTENT -->
+      <main class="page-content">
+        <!-- Workflow Stepper (7-step sequence) -->
+        <div class="workflow-strip">
+          <a href="dashboard.html" class="workflow-step">
+            <span class="step-number">1</span>
+            <span>Dashboard</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="upload.html" class="workflow-step">
+            <span class="step-number">2</span>
+            <span>Upload CSV</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="demand-analysis.html" class="workflow-step">
+            <span class="step-number">3</span>
+            <span>Analyse</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="ai-prediction.html" class="workflow-step">
+            <span class="step-number">4</span>
+            <span>Predict</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="risk-analysis.html" class="workflow-step active">
+            <span class="step-number">5</span>
+            <span>Detect Risk</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="recommendations.html" class="workflow-step">
+            <span class="step-number">6</span>
+            <span>Recommend</span>
+          </a>
+          <span class="workflow-arrow">&rarr;</span>
+          <a href="reports.html" class="workflow-step">
+            <span class="step-number">7</span>
+            <span>Report</span>
+          </a>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Medicine Inventory & AI Demand Comparison</h1>
+            <p>Compare real-time on-hand stock with machine-learning demand forecasts and review clinical shortage rationales.</p>
+          </div>
+          <div class="page-header-actions">
+            <button id="resetInventoryBtn" class="btn btn-outline btn-sm" title="Restore original dataset">
+              <i data-lucide="rotate-ccw"></i>
+              <span>Reset Data</span>
+            </button>
+            <a href="recommendations.html" class="btn btn-primary btn-sm">
+              <i data-lucide="shopping-cart"></i>
+              <span>Review AI Reorder POs</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Featured Clinical AI Diagnostic Card (Dynamically bound to Paracetamol / Top Shortage from Single Store) -->
+        <div class="ai-insight-box">
+          <div class="ai-icon-circle">
+            <i data-lucide="bot"></i>
+          </div>
+          <div class="ai-content">
+            <h4 id="featuredMedTitle">Featured Clinical AI Diagnostic &bull; Paracetamol 500mg</h4>
+            <p id="featuredExplanation">
+              <strong>AI Explanation:</strong> "Demand has increased continuously over the previous months, while current stock is insufficient to meet the predicted requirement."
+            </p>
+            <div style="margin-top: 0.5rem; display: flex; gap: 1.5rem; font-size: 0.82rem; color: var(--text-secondary); flex-wrap: wrap;">
+              <span>Predicted Demand: <strong id="featuredPredDemand" style="color: var(--primary);">800 units</strong></span>
+              <span>Current Stock: <strong id="featuredStock">300 units</strong></span>
+              <span>Recommended Reorder: <strong id="featuredReorder" style="color: var(--danger);">+500 units</strong></span>
+              <span>Risk Classification: <span id="featuredRiskBadge" class="badge badge-danger">🔴 Shortage</span></span>
+            </div>
+          </div>
+          <button id="featuredDiagnosticBtn" class="btn btn-outline btn-sm" onclick="showAIExplanationModal('Paracetamol 500mg')" style="align-self: center; background: #fff;">
+            <span>Deep Diagnostic</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- Table Toolbar: Filters & Counters -->
+        <div class="table-toolbar">
+          <div class="toolbar-filters">
+            <button class="filter-chip active" data-filter="all">All Formularies</button>
+            <button class="filter-chip chip-danger" data-filter="shortage">🔴 Shortage Risk</button>
+            <button class="filter-chip chip-success" data-filter="stable">🟢 Stable Stock</button>
+            <button class="filter-chip chip-warning" data-filter="overstock">🟡 Overstock</button>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-secondary);" id="filteredCount">
+            Loading medicines...
+          </div>
+        </div>
+
+        <!-- INVENTORY TABLE (Exact Column Specification) -->
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Medicine</th>
+                  <th>Current Stock</th>
+                  <th>Predicted Demand</th>
+                  <th>Risk</th>
+                  <th>Recommended Reorder</th>
+                  <th>AI Explanation & Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryTableBody">
+                <!-- Injected dynamically by inventory.js -->
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination Toolbar -->
+          <div class="pagination-footer" id="inventoryPagination" style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; background: #fafafa; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-secondary); flex-wrap: wrap; gap: 0.75rem;">
+          </div>
+        </div>
+
+        <!-- Risk Legend Footer Box -->
+        <div style="display: flex; gap: 2rem; margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap;">
+          <div><strong style="color: var(--text-main);">Clinical Risk Definitions:</strong></div>
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <span>🔴 <strong>Shortage:</strong> Current stock is below projected demand. Immediate reorder recommended.</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <span>🟢 <strong>Stable:</strong> Stock meets projected demand within safe 20-35% operating buffer.</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <span>🟡 <strong>Overstock:</strong> Stock exceeds 135% of forecasted demand. Hold reorders to avoid expiration.</span>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/inventory.js"></script>
+</body>
+</html>
