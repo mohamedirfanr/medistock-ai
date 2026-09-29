@@ -15,7 +15,7 @@ const API_CONFIG = {
   USE_BACKEND_API: localStorage.getItem("medistock_use_backend") !== "false",
   
   // Base URL of the Python FastAPI service
-  BASE_URL: localStorage.getItem("medistock_api_url") || "http://127.0.0.1:8000/api",
+  BASE_URL: localStorage.getItem("medistock_api_url") || "https://medistock-ai-ytbd.vercel.app/docs",
   
   // Request timeout in milliseconds
   TIMEOUT_MS: 6000,
